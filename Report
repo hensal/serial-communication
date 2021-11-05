@@ -1,6 +1,6 @@
 RL78G14(80Pin)I/O map:
 Port 0 has 6 bits as 0,1,2,3,4,5,6bit.
-Timer has different value as 1(0x01U),2(0x02U),4(0x04),8(0x08),10(0x10U),20(0x20U),40(0x40U),80(0x80U).
+Different bit has different value as 0(0x01U),1(0x02U),2(0x04),3(0x08),4(0x10U),5(0x20U),6(0x40U),7(0x80U).
 
 Sirial: If serial TxD2 is in port-2 and bit-3 location and RxD2 is in port-2 and bit-4 location its address will be as:
     /* Set RxD0 pin */
