@@ -1,3 +1,5 @@
+It transfer data in once the debugg in done(one click)
+
 main.c:
 #include "sfr.h"
 #include "common.h"
