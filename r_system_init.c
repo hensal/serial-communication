@@ -71,7 +71,7 @@ void R_Systeminit(void)
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void hdwinit(void)
+void hdwinit(void)                     //this must be included here
 {
     DI();
     R_Systeminit();
