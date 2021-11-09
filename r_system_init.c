@@ -71,7 +71,7 @@ void R_Systeminit(void)
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void hdwinit(void)                     //this must be included here
+void hdwinit(void)                     //this must be included here for serial communication
 {
     DI();
     R_Systeminit();
