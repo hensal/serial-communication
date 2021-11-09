@@ -1,3 +1,6 @@
+Erro:Declaration is incompatible with previous "R_Systeminit" (declared at line 84)
+solution:Prototype for the function is not defined or wrong.
+
 RL78G14(80Pin)I/O map:
 Port 0 has 6 bits as 0,1,2,3,4,5,6bit.
 Different bit has different value as 0(0x01U),1(0x02U),2(0x04),3(0x08),4(0x10U),5(0x20U),6(0x40U),7(0x80U).
