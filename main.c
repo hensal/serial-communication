@@ -171,7 +171,7 @@ void main(void)
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void R_MAIN_UserInit(void)
+void R_MAIN_UserInit(void)          //This must be included here for serial communication 
 {
     /* Start user code. Do not edit comment generated here */
     EI();
