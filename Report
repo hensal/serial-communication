@@ -1,6 +1,47 @@
 Erro:Declaration is incompatible with previous "R_Systeminit" (declared at line 84)
 solution:Prototype for the function is not defined or wrong.
 
+For setting the port register in microcontroller:RL78G14(80pin)I/O map:
+->For Uart only port-1 bit-3,bit-4,bit-5,bit-6 and bit-7 is used.
+So setting must be done only for these bits including:  Port(P1),PM1,PU1,POM1,PMC1,PI1 register setting only must be done.
+for example:PM1 register bit as:
+bit-7   bit-6   bit-5   bit-4   bit3   bit-2   bit-1   bit-0
+ 0         0      0      0       0       0       0       0
+ *NOTE:Here, each bit value changes as per specifications.It means which PORT and which bits is used based on that register address is written.
+
+port     Bit     timer               serial     I2c     A/D     D/A       SPi/ETC     IOSetting      VT-TR     Annotation(注釈)
+  0       0                                                                  I                       SD-card
+  0       1                                                                  O                       SD-card
+  0       2                           TxD1                                  M(O)                     SD-card
+  0                                   RxD1                                  M(I)                     SD-card
+  0                                                                         M(O)                     SD-card
+  0       5                                                                  O
+  0       6                                                                  O
+  1       0     (0x00)                                                                               RTC/FRAM
+  1       1     (0x02)                                                                               RTc/FRAM
+  1       2      0x04                                                                                RTC/FRAM
+  1       3     (0x08=00001000)        RxD2                                                            UART
+  1       4     (0x10=00010000)        TxD2                                                            UART
+  1       5      0x20=00100000                                                                         UART
+  1       6      0x40=01000000                                                                         UART
+  1       7     (0x80=10000000)                                                                        UART
+  2       0
+  2
+  2
+  2
+  2
+  2
+  2       7
+  7       0
+  7
+  7
+  7
+  7
+  7
+  7       7
+  
+  
+
 Register addressing:
 ->Below for P0, it is intialized with 0x00 it means binary value of 8 bit is 00000000 and for PM0 it is initialized with 0x09 it means its binary value is 00001001 
 and 8-bit register contains be:
@@ -8,6 +49,7 @@ bit-7   bit-6     bit-5    bit-4    bit-3    bit-2    bit-1    bit-0
 0        0         0        0         0       0        0         0         for Port(PO)
 0        0         0        0         1       0        0         1         for PM0(PMn)
 
+Here,since UART is connected to port-1  PM1 is used for UARt ,LCD power is connected to port-3 so P3 and PM3 is used for LCD power.
 void PORT_Init( void )
 {   
 
