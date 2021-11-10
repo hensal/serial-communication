@@ -1,18 +1,60 @@
 Erro:Declaration is incompatible with previous "R_Systeminit" (declared at line 84)
 solution:Prototype for the function is not defined or wrong.
 
+Register addressing:
+->Below for P0, it is intialized with 0x00 it means binary value of 8 bit is 00000000 and for PM0 it is initialized with 0x09 it means its binary value is 00001001 
+and 8-bit register contains be:
+bit-7   bit-6     bit-5    bit-4    bit-3    bit-2    bit-1    bit-0
+0        0         0        0         0       0        0         0         for Port(PO)
+0        0         0        0         1       0        0         1         for PM0(PMn)
+
+void PORT_Init( void )
+{   
+
+//GPIO_Port 設定
+	P0 = 0;			//Port出力レジスタ 初期設定
+	P1 = 0;
+	P2 = 0;
+	P3 = 0x01;		//LCD POWER ON
+	P4 = 0;
+	P5 = 0;
+	P6 = 0;
+	P7 = 0;	
+	P10 = 0x01;		//FRAM DISABLE
+	P11 = 0;
+	P13 = 0;
+	P14 = 0;	
+	P15 = 0;
+//Portモードレジスタ セット（1:INPUT、0:OUTPUT）
+	PM0  = 0x09;		//N,SW_COM,(CLK,DO,CS,Dtect)SDCard
+	PM1  = 0x32;		//AUX_UART & RTC IF
+	PM2  = 0xff;		//S00~S70 input Port
+	PM3  = 0xfe;		//LCD POWER output IF
+	PM4  = 0xc7;		//SW_SEL output Port
+	PM5  = 0xff;		//S400~S1000 input Port
+	PM6  = 0xf0;		//S000~S300 input/LED1~4 output
+	PM7  = 0x00;		//S0~S7 output
+	PM10 = 0xfe;		//FRAM_CS output
+	PM11 = 0xff;		//NC intput(inner pull up)
+	PM12 = 0xff;		//input(X,XT)
+	 			//PM13=MU電源--I/O固定
+	PM14 = 0x7f;		//RTC_CE のみoutput
+	PM15 = 0xf3;		//S80,S90 input
+}
+
+
 RL78G14(80Pin)I/O map:
 Port 0 has 6 bits as 0,1,2,3,4,5,6bit.
 Different bit has different value as 0(0x01U),1(0x02U),2(0x04),3(0x08),4(0x10U),5(0x20U),6(0x40U),7(0x80U).
 
-Sirial: If serial TxD2 is in port-2 and bit-3 location and RxD2 is in port-2 and bit-4 location its address will be as:
+Sirial-UART-2: If serial TxD2 is in port-2 and bit-3 location and RxD2 is in port-2 and bit-4 location its address will be as:
     /* Set RxD0 pin */
     PM1 |= 0x10U;
     /* Set TxD0 pin */
     P1 |= 0x08U;
     PM1 &= 0xFDU;
     
-likewise, If serial TxD0 is in port-5 and bit-1 location and RxD0 is in port-5 and bit-0 location its address will be as:
+likewise UART-0, If serial TxD0 is in port-5 and bit-1 location and RxD0 is in port-5 and bit-0 location its address will be as:
     /* Set RxD0 pin */
     PM5 |= 0x01U;
     /* Set TxD0 pin */
