@@ -201,6 +201,8 @@ Macro definitions
 #define _FE_PMC12_DEFAULT       (0xFEU) /* PMC12 default value */
 #define _7F_PMC14_DEFAULT       (0x7FU) /* PMC14 default value */
 
+#define _FF_PM2_DEFAULT         (0xFFU) /* PM0 default value CREATED AFTER BY ME*/
+
 /***********************************************************************************************************************
 Typedef definitions
 ***********************************************************************************************************************/
