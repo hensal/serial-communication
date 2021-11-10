@@ -1,0 +1,180 @@
+#include "sfr.h"
+#include "common.h"
+#include "config.h"
+#include "system.h"
+#include "timer.h"
+#include "watchdogtimer.h"
+#include "panel.h"
+#include "lcd_con.h"
+#include "button.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include "r_cg_macrodriver.h"
+#include "r_cg_cgc.h"
+#include "r_cg_port.h"
+#include "r_cg_serial.h"
+#include "r_cg_userdefine.h"
+
+void IO_Init(void);	
+void op_switich_in(void);		
+void op_switich_mdoef(void);
+void op_switich_modef(void);
+void op_switich_upf(void);
+void op_switich_downf(void);
+int op_switich_leftf(void);
+void op_switich_rightf(void);
+void op_switich_setf(void);
+void op_switich_setff(void);
+int display1(void);
+void R_Systeminit(void);
+//int write_string(uint_fast8_t row, uint_fast8_t col, unsigned const char  *str);
+void op_switich_upf1(void);
+
+unsigned char 	modef 	= 0;		
+unsigned char 	upf 	= 0;
+unsigned char 	downf 	= 0;
+unsigned char 	leftf 	= 0;
+unsigned char 	rightf 	= 0;
+unsigned char 	setf 	= 0;
+
+unsigned char dpcnt[4];
+
+uint8_t g_uart0_rx_buffer = 0U;                     /* UART0 receive buffer */
+uint8_t g_uart0_rx_error = 0U;                      /* UART0 receive error status */
+MD_STATUS g_uart0_tx_end = 0U;                      /* UART0 transmission end */  
+
+static const uint8_t g_messageOK[4] = {"OK\r\n"};   /* Message for "T" */
+static const uint8_t g_messageok[4] = {"ok\r\n"};   /* Message for "t" */
+static const uint8_t g_messageUC[4] = {"UC\r\n"};   /* Message for other */
+static const uint8_t g_messageFE[4] = {"FE\r\n"};   /* Framing error message */
+static const uint8_t g_messagePE[4] = {"PE\r\n"};   /* Parity error message */
+static const uint8_t g_messageOE[4] = {"OE\r\n"};   /* Overrun error message */
+/* End user code. Do not edit comment generated here */
+void R_MAIN_UserInit(void);
+
+//************************************************************************
+//* Function Name: main
+//* Description  : This function implements main function.?i???C?g?O?h?j
+//* Arguments    : None
+//* Return Value : None
+//*************************************************************************
+void main(void);
+void main_loop(void);
+
+void main(void) {
+	
+        /* Hardware Initiate */   
+        hdwinit(); 	
+	 
+	/* Panel Initiate */
+	panel_init0();	
+	
+	/*LCD Initiate */
+	lcd_init();
+	
+	/*LCD display */
+	 display1();	
+	
+	/* Main Loop */
+	main_loop();		
+}
+
+void main_loop(void)
+{
+     
+     /* Start user code. Do not edit comment generated here */
+    {
+        volatile MD_STATUS    status = 0U;        /* UART Status */
+
+        /* UART0 receive buffer setting */
+        status = R_UART0_Receive(&g_uart0_rx_buffer, 1U);
+
+        /* Start the UART0 Tx/Rx operation */
+        R_UART0_Start();
+
+        /* Main loop */
+        while (1U)
+        {
+            HALT();    /* Wait for UART Rx interrupt */
+
+            /* Finish Reception and check result */
+
+            SRMK1 = 1U;            /* Disable Reception Interrupt */
+            SREMK1 = 1U;           /* Disable Reception error Interrupt */
+
+            if (g_uart0_rx_error)    /* Check reception error */
+            {    /* Reception error */
+                if (g_uart0_rx_error & 0x04U)           /* Framing error */
+                {    /* Transmit "Framing error" */
+                    g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageFE, 4U);
+                    while (0U == g_uart0_tx_end)
+                    {
+                        NOP();    /* Wait for final transmit */
+                    }
+                }
+                else
+                {
+                    ;
+                }
+
+                if (g_uart0_rx_error & 0x02U)           /* Parity error */
+                {    /* Transmit "Parity error" */
+                    g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messagePE, 4U);
+                    while (0U == g_uart0_tx_end)
+                    {
+                        NOP();    /* Wait for final transmit */
+                    }
+                }
+                else
+                {
+                    ;
+                }
+
+                if (g_uart0_rx_error & 0x01U)           /* Overrun error */
+                {    /* Transmit "Overrun error" */
+                    g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageOE, 4U);
+                    while (0U == g_uart0_tx_end)
+                    {
+                        NOP();    /* Wait for final transmit */
+                    }
+                }
+                else
+                {
+                    ;
+                }
+
+            }
+            else        /* Normal reception */
+            {
+                switch (g_uart0_rx_buffer)    /* Check Reception data */
+                {
+                    case 'T':    /* Reception data is 'T' */
+                        g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageOK, 4U);    /* Transmit "OK" */
+                        break;
+
+                    case 't':    /* Reception data is 't' */
+                        g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageok, 4U);    /* Transmit "ok" */
+                        break;
+
+                    default:        /* Received another character */
+                        g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageUC, 4U);    /* Transmit "UC" */
+                        break;
+                }
+                while (0U == g_uart0_tx_end)
+                {
+                    NOP();    /* Wait for final transmit */
+                }
+            }
+
+            /* For next reception */
+            /* Set reception buffer pointer */
+            status = R_UART0_Receive(&g_uart0_rx_buffer, 1U);
+
+            SRMK1 = 0U;                         /* Enable Reception Interrupt */
+            SREMK1 = 0U;                       /* Enable Reception error Interrupt */
+        }
+    }
+    /* End user code. Do not edit comment generated here */
+}
+
+
