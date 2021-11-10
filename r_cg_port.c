@@ -53,6 +53,9 @@ Global variables and functions
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
+//IF YOU HAVE CREATED DIFFERENT MICON-PORT FOR LCD AND SERIAL COMMUNICATION THEN FOR THE LCD DISPLAY(TOGHTHER LCD AND SERIAL TO WORK) YOU HAVE USED PORT REGISTER 
+//TO DISPLAY IN LCD SAME WAY IN THE SERIAL AS PORT-3 AND PORT-7 IS USED FOR LCD DISPLAY HERE IN SERIAL PORT CREATION P3,PM3,PM7,P7 MUST BE MADE EQUVALENT.
+
 void R_PORT_Create(void)
 {
     P0 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 |
