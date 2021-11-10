@@ -25,7 +25,14 @@
 * Description  : This file implements system initializing function.
 * Creation Date: 2016/04/08
 ***********************************************************************************************************************/
-
+#include "sfr.h"
+#include "common.h"
+#include "config.h"
+#include "system.h"
+#include "int.h"
+#include "port.h"
+#include "timer.h"
+#include "watchdogtimer.h"
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
@@ -42,10 +49,44 @@ Pragma directive
 ***********************************************************************************************************************/
 /* Start user code for pragma. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
+//IF SYSTEM_INIT IS DECLARED ONCE ,ANOTHER FOR LCD IS NOT REQUIRED 
 
-/***********************************************************************************************************************
-Global variables and functions
-***********************************************************************************************************************/
+void R_Systeminit(void);
+void PORT_Init(void);
+void SystemInit( void )
+{
+	/* Clock generator initiate */
+	Clock_Init();
+	
+	/* Port initiate */
+	PORT_Init();
+	
+	/* WDT initiate */
+	WDT_Init();
+	
+	/* INT initiate */
+	INT_Init();
+	
+#if !defined PWM_USED
+	/* TM00 initiate */
+	TM00_Init();
+#endif /* end of defined PWM_USED */
+}
+
+/*******************************************************************************
+* Function Name: hdwinit
+* Description  : This function initializes hardware settings.
+* Arguments    : none
+* Return Value : none
+********************************************************************************/
+void hdwinit( void )
+{
+	__DI( );	
+	SystemInit( );	
+	R_Systeminit();
+	__EI( );
+}
+
 /* Start user code for global. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
@@ -70,12 +111,7 @@ void R_Systeminit(void)
 * Description  : This function initializes hardware setting.
 * Arguments    : None
 * Return Value : None
-***********************************************************************************************************************/
-void hdwinit(void)                     //this must be included here for serial communication
-{
-    DI();
-    R_Systeminit();
-}
+
 
 /* Start user code for adding. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
