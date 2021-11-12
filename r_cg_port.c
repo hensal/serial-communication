@@ -55,13 +55,12 @@ Global variables and functions
 ***********************************************************************************************************************/
 void R_PORT_Create(void)
 {
-    P0 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 |
-         _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0 | _00_Pn7_OUTPUT_0;
+    P0 = _20_Pn5_OUTPUT_1;
     P1 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 |
          _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0 | _00_Pn7_OUTPUT_0;
     P2 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 |
          _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0 | _00_Pn7_OUTPUT_0;
-    P3 = _01_Pn0_OUTPUT_1;            //to work both and lcd and serial together
+    P3 = _01_Pn0_OUTPUT_1;            //to work both and lcd and serial together. Since port-3 of bit-0 lcd power supply is connected.
     P4 = _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 | _00_Pn5_OUTPUT_0 |
          _00_Pn6_OUTPUT_0 | _00_Pn7_OUTPUT_0;
     P5 = _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 | _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0 |
@@ -78,16 +77,16 @@ void R_PORT_Create(void)
           _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0 | _00_Pn7_OUTPUT_0;
     P15 = _00_Pn0_OUTPUT_0 | _00_Pn1_OUTPUT_0 | _00_Pn2_OUTPUT_0 | _00_Pn3_OUTPUT_0 | _00_Pn4_OUTPUT_0 |
           _00_Pn5_OUTPUT_0 | _00_Pn6_OUTPUT_0;
-    PMC0 = _00_PMCn2_DI_ON | _00_PMCn3_DI_ON | _F3_PMC0_DEFAULT;
+    PMC0 = _00_PMCn2_DI_ON | _00_PMCn3_DI_ON | _00_PMCn0_DI_ON;
     PMC1 = _00_PMCn2_DI_ON | _00_PMCn3_DI_ON | _00_PMCn6_DI_ON | _00_PMCn7_DI_ON;
     PMC10 = _00_PMCn0_DI_ON | _FE_PMC10_DEFAULT;
     PMC12 = _00_PMCn0_DI_ON | _FE_PMC12_DEFAULT;
     PMC14 = _00_PMCn7_DI_ON | _7F_PMC14_DEFAULT;
     ADPC = _01_ADPC_DI_ON;
-    PM0 = _FF_PM2_DEFAULT;
+    PM0 =  _09_PM0_DEFAULT; 
     PM1 = _00_PMn0_MODE_OUTPUT | _00_PMn1_MODE_OUTPUT | _00_PMn2_MODE_OUTPUT | _00_PMn3_MODE_OUTPUT |
           _00_PMn4_MODE_OUTPUT | _00_PMn5_MODE_OUTPUT | _00_PMn6_MODE_OUTPUT | _00_PMn7_MODE_OUTPUT;
-    PM2 = _FF_PM2_DEFAULT;    //TO WORK BUTTON PRESS TOGETHER WITH LCD AND SERIAL-COMMUNICATION
+    PM2 = _FF_PM2_DEFAULT;      //TO WORK BUTTON PRESS TOGETHER WITH LCD AND SERIAL-COMMUNICATION
     PM3 = _00_PMn0_MODE_OUTPUT | _00_PMn1_MODE_OUTPUT | _FE_PM12_DEFAULT;
     PM4 = _01_PMn0_NOT_USE | _00_PMn1_MODE_OUTPUT | _00_PMn2_MODE_OUTPUT | _00_PMn3_MODE_OUTPUT | _00_PMn4_MODE_OUTPUT |
           _00_PMn5_MODE_OUTPUT | _00_PMn6_MODE_OUTPUT | _00_PMn7_MODE_OUTPUT;
@@ -105,5 +104,6 @@ void R_PORT_Create(void)
     PM15 = _00_PMn0_MODE_OUTPUT | _00_PMn1_MODE_OUTPUT | _00_PMn2_MODE_OUTPUT | _00_PMn3_MODE_OUTPUT |
            _00_PMn4_MODE_OUTPUT | _00_PMn5_MODE_OUTPUT | _00_PMn6_MODE_OUTPUT | _80_PM15_DEFAULT;
 }
+
 /* Start user code for adding. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
