@@ -147,10 +147,10 @@ void main(void)
                         g_uart0_tx_end = R_UART0_Send((uint8_t *)g_messageUC, 4U);    /* Transmit "UC" */
                         break;
                 }
-                while (0U == g_uart0_tx_end)
-                {
-                    NOP();    /* Wait for final transmit */
-                }
+               // while (0U == g_uart0_tx_end)
+               // {
+                   // NOP();    /* Wait for final transmit */       //THIS LOOP CONTIUES FOREVER SO BUTTTON DOSENOT WORK
+             //   }
             }
 
             /* For next reception */
